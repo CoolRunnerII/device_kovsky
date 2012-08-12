@@ -1,7 +1,7 @@
 /******************************************************************************
- * RPC Client of GPS HAL (hardware abstraction layer) for HD2/Leo
+ * RPC Client of GPS HAL (hardware abstraction layer) for kovsky
  * 
- * leo-gps-rpc.c
+ * gps-rpc.c
  * 
  * Copyright (C) 2009-2010 The XDAndroid Project
  * Copyright (C) 2010      dan1j3l @ xda-developers
@@ -36,12 +36,12 @@
 #include <cutils/log.h>
 #include <gps.h>
 
-#define  LOG_TAG  "gps_leo_rpc"
+#define  LOG_TAG  "gps_rpc"
 
-#define  ENABLE_NMEA 1
+#define  ENABLE_NMEA 0
 
 #define  DUMP_DATA  0
-#define  GPS_DEBUG  0
+#define  GPS_DEBUG  1
 
 #if GPS_DEBUG
 #  define  D(...)   LOGD(__VA_ARGS__)
@@ -240,7 +240,7 @@ static int pdsm_client_init(struct CLIENT *clnt, int client) {
     par.data = par_data;
     par.length=1;
     par.data[0]=client;
-    if(clnt_call(clnt, 0x2, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0x3, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_client_init(%x) failed\n", client);
         exit(-1);
     }
@@ -256,7 +256,7 @@ static int pdsm_client_release(struct CLIENT *clnt, int client) {
     par.data = &par_data;
     par.length=1;
     par.data[0]=client_IDs[client];
-    if(clnt_call(clnt, 0x3, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0x4, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_client_release(%x) failed\n", client_IDs[client]);
         exit(-1);
     }
@@ -274,7 +274,7 @@ int pdsm_atl_l2_proxy_reg(struct CLIENT *clnt, int val0, int val1, int val2) {
     par.data[0]=val0;
     par.data[1]=val1;
     par.data[2]=val2;
-    if(clnt_call(clnt, 0x3, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0x4, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_atl_l2_proxy_reg(%d, %d, %d) failed\n", par.data[0], par.data[1], par.data[2]);
         exit(-1);
     }
@@ -290,7 +290,7 @@ int pdsm_atl_dns_proxy_reg(struct CLIENT *clnt, int val0, int val1) {
     par.length=2;
     par.data[0]=val0;
     par.data[1]=val1;
-    if(clnt_call(clnt, 0x6, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0x7, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_atl_dns_proxy_reg(%d, %d) failed\n", par.data[0], par.data[1]);
         exit(-1);
     }
@@ -310,7 +310,7 @@ int pdsm_client_pd_reg(struct CLIENT *clnt, int client, int val0, int val1, int 
     par.data[3]=val2;
     par.data[4]=val3;
     par.data[5]=val4;
-    if(clnt_call(clnt, 0x4, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0x5, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_client_pd_reg(%x, %d, %d, %d, %x, %d) failed\n", par.data[0], par.data[1], par.data[2], par.data[3], par.data[4], par.data[5]);
         exit(-1);
     }
@@ -330,7 +330,7 @@ int pdsm_client_pa_reg(struct CLIENT *clnt, int client, int val0, int val1, int 
     par.data[3]=val2;
     par.data[4]=val3;
     par.data[5]=val4;
-    if(clnt_call(clnt, 0x5, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0x6, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_client_pa_reg(%x, %d, %d, %d, %x, %d) failed\n", par.data[0], par.data[1], par.data[2], par.data[3], par.data[4], par.data[5]);
         exit(-1);
     }
@@ -350,7 +350,7 @@ int pdsm_client_lcs_reg(struct CLIENT *clnt, int client, int val0, int val1, int
     par.data[3]=val2;
     par.data[4]=val3;
     par.data[5]=val4;
-    if(clnt_call(clnt, 0x6, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0x7, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_client_lcs_reg(%x, %d, %d, %d, %x, %d) failed\n", par.data[0], par.data[1], par.data[2], par.data[3], par.data[4], par.data[5]);
         exit(-1);
     }
@@ -370,7 +370,7 @@ int pdsm_client_ext_status_reg(struct CLIENT *clnt, int client, int val0, int va
     par.data[3]=val2;
     par.data[4]=val3;
     par.data[5]=val4;
-    if(clnt_call(clnt, 0x8, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0x9, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_client_ext_status_reg(%x, %d, %d, %d, %d, %d) failed\n", par.data[0], par.data[1], par.data[2], par.data[3], par.data[4], par.data[5]);
         exit(-1);
     }
@@ -390,7 +390,7 @@ int pdsm_client_xtra_reg(struct CLIENT *clnt, int client, int val0, int val1, in
     par.data[3]=val2;
     par.data[4]=val3;
     par.data[5]=val4;
-    if(clnt_call(clnt, 0x7, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0x8, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_client_xtra_reg(%x, %d, %d, %d, %d, %d) failed\n", par.data[0], par.data[1], par.data[2], par.data[3], par.data[4], par.data[5]);
         exit(-1);
     }
@@ -405,7 +405,7 @@ int pdsm_client_deact(struct CLIENT *clnt, int client) {
     par.data = &par_data;
     par.length=1;
     par.data[0]=client_IDs[client];
-    if(clnt_call(clnt, 0xA, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0xB, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_client_deact(%x) failed\n", par.data[0]);
         exit(-1);
     }
@@ -420,7 +420,7 @@ int pdsm_client_act(struct CLIENT *clnt, int client) {
     par.data = par_data;
     par.length=1;
     par.data[0]=client_IDs[client];
-    if(clnt_call(clnt, 0x9, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0xA, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_client_act(%x) failed\n", par.data[0]);
         exit(-1);
     }
@@ -590,7 +590,7 @@ val17, int val18, int val19, int val20, int val21, int val22, int val23, int val
     par.data[26]=val26;
     par.data[27]=val27;
     par.data[28]=val28;
-    if(clnt_call(clnt, 0xb, 
+    if(clnt_call(clnt, 0xc, 
              (xdrproc_t)xdr_args, 
              (caddr_t)&par, 
              (xdrproc_t)xdr_result_int, 
@@ -613,7 +613,7 @@ int pdsm_client_end_session(struct CLIENT *clnt, int val0, int val1, int val2, i
     par.data[1]=val1;
     par.data[2]=val2;
     par.data[3]=client_IDs[client];
-    if(clnt_call(clnt, 0xc, xdr_args, &par, xdr_result_int, &res, timeout)) {
+    if(clnt_call(clnt, 0xd, xdr_args, &par, xdr_result_int, &res, timeout)) {
         D("pdsm_client_end_session(%d, %d, %d, %x) failed\n", par.data[0], par.data[1], par.data[2], par.data[3]);
         exit(-1);
     }
@@ -636,7 +636,7 @@ enum pdsm_pd_events {
     PDSM_PD_EVENT_UPDATE_FAIL = 0x1000000,
 };
 
-//From leo-gps.c
+//From gps.c
 extern void update_gps_location(GpsLocation *location);
 extern void update_gps_status(GpsStatusValue value);
 extern void update_gps_svstatus(GpsSvStatus *svstatus);
@@ -930,46 +930,45 @@ int parse_gps_conf() {
     return 0;
 }
 
-int init_leo() 
+int init_gps5225() 
 {
-    struct CLIENT *clnt=clnt_create(NULL, 0x3000005B, 0x00010001, NULL);
-    struct CLIENT *clnt_atl=clnt_create(NULL, 0x3000001D, 0x00010001, NULL);
+    struct CLIENT *clnt=clnt_create(NULL, 0x3000005B, 0, NULL);
+    struct CLIENT *clnt_atl=clnt_create(NULL, 0x3000001D, 0, NULL);
     int i;
     _clnt=clnt;
     SVCXPRT *svc=svcrtr_create();
     _svc=svc;
     xprt_register(svc);
-    svc_register(svc, 0x3100005b, 0x00010001, (__dispatch_fn_t)dispatch, 0);
-    svc_register(svc, 0x3100005b, 0, (__dispatch_fn_t)dispatch, 0);
-    svc_register(svc, 0x3100001d, 0x00010001, (__dispatch_fn_t)dispatch, 0);
-    svc_register(svc, 0x3100001d, 0, (__dispatch_fn_t)dispatch, 0);
+    svc_register(svc, 0x3100005b, 0xb93145f7, (__dispatch_fn_t) dispatch,0);
+    svc_register(svc, 0x3100005b, 0, (__dispatch_fn_t) dispatch,0);
+    svc_register(svc, 0x3100001d, 0/*xb93145f7*/, (__dispatch_fn_t) dispatch,0);
     if(!clnt) {
-        D("Failed creating client\n");
-        return -1;
+            D("Failed creating client\n");
+            return -1;
     }
     if(!svc) {
-        D("Failed creating server\n");
-        return -2;
+            D("Failed creating server\n");
+            return -2;
     }
 
     // PDA
     pdsm_client_init(clnt, 2);
-    pdsm_client_pd_reg(clnt, 2, 0, 0, 0, 0xF3F0FFFF, 0);
-    pdsm_client_pa_reg(clnt, 2, 0, 2, 0, 0x7FFEFE0, 0);
-    pdsm_client_ext_status_reg(clnt, 2, 0, 1, 0, 4, 0);
+    pdsm_client_pd_reg(clnt, 2, 0, 0, 0, 0xF310FFFF, 0xffffffff);
+    pdsm_client_pa_reg(clnt, 2, 0, 2, 0, 0x003fefe0, 0xffffffff);
+    pdsm_client_ext_status_reg(clnt, 2, 0, 1, 0, 4, 0xffffffff);
     pdsm_client_act(clnt, 2);
 
     // XTRA
     pdsm_client_init(clnt, 0xb);
-    pdsm_client_xtra_reg(clnt, 0xb, 0, 3, 0, 7, 0);
+    pdsm_client_xtra_reg(clnt, 0xb, 0, 3, 0, 7, 0xffffffff);
     pdsm_client_act(clnt, 0xb);
-    pdsm_atl_l2_proxy_reg(clnt_atl, 1,0,0);
-    pdsm_atl_dns_proxy_reg(clnt_atl, 1,0);
+    pdsm_atl_l2_proxy_reg(clnt_atl, 1, 4, 5);
+    pdsm_atl_dns_proxy_reg(clnt_atl, 1, 6);
 
     // NI
-    pdsm_client_init(clnt, 4);
-    pdsm_client_lcs_reg(clnt, 4, 0, 7, 0, 0x3F0, 0);
-    pdsm_client_act(clnt, 4);
+    pdsm_client_init(clnt, 0x4);
+    pdsm_client_lcs_reg(clnt, 0x4, 0, 7, 0, 0x30f, 8);
+    pdsm_client_act(clnt, 0x4);
     
     if (!CHECKED[0]) {
         if (use_nmea)
@@ -988,7 +987,7 @@ int init_leo()
 
 int init_gps_rpc() 
 {
-    init_leo();
+    init_gps5225();
     return 0;
 }
 

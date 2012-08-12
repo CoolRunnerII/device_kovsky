@@ -35,7 +35,7 @@
 #include <cutils/sockets.h>
 #include <gps.h>
 
-#define  LOG_TAG  "gps_leo"
+#define  LOG_TAG  "gps"
 
 #define  XTRA_BLOCK_SIZE  400
 #define  ENABLE_NMEA 1

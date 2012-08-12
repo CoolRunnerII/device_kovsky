@@ -16,8 +16,8 @@ LOCAL_C_INCLUDES := \
     $(TARGET_OUT_HEADERS)/librpc
 
 LOCAL_SRC_FILES := \
-		leo-gps.c \
-		leo-gps-rpc.c \
+		gps.c \
+		gps-rpc.c \
 		time.cpp \
 
 include $(BUILD_SHARED_LIBRARY)
