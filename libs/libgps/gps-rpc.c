@@ -38,7 +38,7 @@
 
 #define  LOG_TAG  "gps_rpc"
 
-#define  ENABLE_NMEA 0
+#define  ENABLE_NMEA 1
 
 #define  DUMP_DATA  0
 #define  GPS_DEBUG  1
@@ -1057,6 +1057,7 @@ void gps_get_position()
 
 void exit_gps_rpc() 
 {
+    LOGD("%s() is called", __FUNCTION__);
     pdsm_client_end_session(_clnt, 0, 0, 0, 2);
 }
 
