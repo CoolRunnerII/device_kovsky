@@ -135,6 +135,7 @@ else
 endif
 PRODUCT_COPY_FILES += \
 	$(LOCAL_KERNEL):kernel
+	device/htc/kovsky/prebuilt_kernel/tun.ko:/system/lib/modules/
 
 ## (2) Also get non-open-source aspects if available
 $(call inherit-product-if-exists, vendor/htc/kovsky/kovsky-vendor.mk)
