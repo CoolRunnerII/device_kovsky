@@ -134,7 +134,7 @@ else
 	LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
 PRODUCT_COPY_FILES += \
-	$(LOCAL_KERNEL):kernel
+	$(LOCAL_KERNEL):kernel \
 	device/htc/kovsky/prebuilt_kernel/tun.ko:/system/lib/modules/
 
 ## (2) Also get non-open-source aspects if available
