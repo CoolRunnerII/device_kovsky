@@ -21,6 +21,9 @@ $(call inherit-product, device/common/gps/gps_us_supl.mk)
 DEVICE_PACKAGE_OVERLAYS := device/htc/kovsky/overlay
 
 # Use high-density artwork where available
+# PRODUCT_LOCALES += hdpi
+
+# Include additional languages
 PRODUCT_LOCALES += nb_NO el_GR ru_RU sk_SK lt_LT pl_PL uk_UA
 
 PRODUCT_PACKAGES += \
